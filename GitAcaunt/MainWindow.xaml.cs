@@ -22,15 +22,13 @@ namespace GitAcaunt
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        ProcessStartInfo gitInfo;
+        string[] users = new string[5];
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        public void User6N2P()
-        {           
-            ProcessStartInfo gitInfo = new ProcessStartInfo();
+            gitInfo = new ProcessStartInfo();
             gitInfo.CreateNoWindow = true;
             gitInfo.RedirectStandardError = true;
             gitInfo.RedirectStandardOutput = true;
@@ -38,47 +36,74 @@ namespace GitAcaunt
 
             gitInfo.FileName = @"C:\Program Files\Git\bin\git.exe";
 
+            users= HandlerFile.GetUsers();
+
+
+        }
+
+        public void User6N2P()
+        {
+            
+
             Process gitProces = new Process();
-            gitInfo.Arguments = "config --global user.name '6N2P'";
-            gitInfo.Arguments = "config --global user.email 'umnik1985@mail.ru'";
+            gitInfo.Arguments = users[1];
+            
 
             //  gitInfo.WorkingDirectory = YOUR_GIT_REPOSITORY_PATH;
 
             gitProces.StartInfo = gitInfo;            
             gitProces.Start();
-           
 
             string stderr_str = gitProces.StandardError.ReadToEnd();
             string stdout_str = gitProces.StandardOutput.ReadToEnd();
 
             gitProces.WaitForExit();
             gitProces.Close();
+
+            gitInfo.Arguments = users[2];
+            gitProces.StartInfo = gitInfo;
+            gitProces.Start();
+
+
+             stderr_str = gitProces.StandardError.ReadToEnd();
+             stdout_str = gitProces.StandardOutput.ReadToEnd();
+
+            gitProces.WaitForExit();
+            gitProces.Close();
+
+            MessageBox.Show("Учетка изменена на 6N2P");
            
         }
 
         public void UserSergey()
 
-        {
-            ProcessStartInfo gitInfo = new ProcessStartInfo();
-            gitInfo.CreateNoWindow = true;
-            gitInfo.RedirectStandardError = true;
-            gitInfo.RedirectStandardOutput = true;
-            gitInfo.UseShellExecute = false;
+        {          
 
-            gitInfo.FileName = @"C:\Program Files\Git\bin\git.exe";
+            Process gitProcesS = new Process();
+            gitInfo.Arguments = users[3];
+            
 
-            Process gitProces = new Process();
-            gitInfo.Arguments = "config --global user.name 'sergey'";
-            gitInfo.Arguments = "config --global user.email 'ivanovsv@tmnkonst.ru";
+            gitProcesS.StartInfo = gitInfo;
+            gitProcesS.Start();
 
-            gitProces.StartInfo = gitInfo;
-            gitProces.Start();
+            string stderr_str =gitProcesS.StandardError.ReadToEnd();
+            string stdout_str =gitProcesS.StandardOutput.ReadToEnd();
 
-            string stderr_str =gitProces.StandardError.ReadToEnd();
-            string stdout_str =gitProces.StandardOutput.ReadToEnd();
+            gitProcesS.WaitForExit();
+            gitProcesS.Close();
 
-            gitProces.WaitForExit();
-            gitProces.Start();
+            gitInfo.Arguments = users[4];
+
+            gitProcesS.StartInfo = gitInfo;
+            gitProcesS.Start();
+
+             stderr_str = gitProcesS.StandardError.ReadToEnd();
+             stdout_str = gitProcesS.StandardOutput.ReadToEnd();
+
+            gitProcesS.WaitForExit();
+            gitProcesS.Close();
+
+            MessageBox.Show("Учетка изменена на sergey");
         }
 
         private void Button_Click_6N2P(object sender, RoutedEventArgs e)
