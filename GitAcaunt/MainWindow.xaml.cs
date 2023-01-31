@@ -109,6 +109,7 @@ namespace GitAcaunt
         private void Button_Click_6N2P(object sender, RoutedEventArgs e)
         {
             User6N2P();
+            tb_Text.Text = "Аккаунт 6N2P";
         }
 
        
@@ -116,6 +117,7 @@ namespace GitAcaunt
         private void Button_Click_Sergey(object sender, RoutedEventArgs e)
         {
             UserSergey();
+            tb_Text.Text = "Аккаунт sergey";
         }
        
     }
