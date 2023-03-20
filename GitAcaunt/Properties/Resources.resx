@@ -121,4 +121,7 @@
   <data name="ac" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ac.umn;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="ac1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ac1.umn;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

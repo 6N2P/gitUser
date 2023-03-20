@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace GitAcaunt
 {
     class HandlerFile
     {
-        static string path = @"..\..\..\ac.umn";
+        static string path = @"..\..\..\ac.umn";       
 
         public static string[] GetUsers ()
         {

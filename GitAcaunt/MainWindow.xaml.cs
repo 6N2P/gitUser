@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +14,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.Xml.Serialization;
 
 namespace GitAcaunt
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
+    
     public partial class MainWindow : Window
     {
         ProcessStartInfo gitInfo;
         string[] users = new string[5];
+        User Us6N2P;
+        User UsSergey;
         public MainWindow()
         {
             InitializeComponent();
@@ -36,18 +40,27 @@ namespace GitAcaunt
 
             gitInfo.FileName = @"C:\Program Files\Git\bin\git.exe";
 
-            users= HandlerFile.GetUsers();
+            users = HandlerFile.GetUsers();
 
+            Us6N2P = new User("6N2P",users[1], users[2]);
+            UsSergey = new User("sergey",users[3], users[4]);
 
+            //Проверка для десериализации при загрузке программы
+            User DeserialUser = new User();
+            if (File.Exists("serialUeser.xml"))
+            {
+                DeserialUser = DeserializeUser();
+                tb_Text.Text = $"Аккаунт {DeserialUser.Name}";
+            }
+            else
+            {
+                User6N2P();
+            }
         }
-
         public void User6N2P()
         {
-            
-
             Process gitProces = new Process();
-            gitInfo.Arguments = users[1];
-            
+            gitInfo.Arguments = Us6N2P.Name;            
 
             //  gitInfo.WorkingDirectory = YOUR_GIT_REPOSITORY_PATH;
 
@@ -60,10 +73,9 @@ namespace GitAcaunt
             gitProces.WaitForExit();
             gitProces.Close();
 
-            gitInfo.Arguments = users[2];
+            gitInfo.Arguments = Us6N2P.Maill;
             gitProces.StartInfo = gitInfo;
             gitProces.Start();
-
 
              stderr_str = gitProces.StandardError.ReadToEnd();
              stdout_str = gitProces.StandardOutput.ReadToEnd();
@@ -71,16 +83,15 @@ namespace GitAcaunt
             gitProces.WaitForExit();
             gitProces.Close();
 
-            MessageBox.Show("Учетка изменена на 6N2P");
-           
-        }
+            SerializeUser(Us6N2P);
 
+           // MessageBox.Show("Учетка изменена на 6N2P");           
+        }
         public void UserSergey()
 
         {          
-
             Process gitProcesS = new Process();
-            gitInfo.Arguments = users[3];
+            gitInfo.Arguments = UsSergey.Name;
             
 
             gitProcesS.StartInfo = gitInfo;
@@ -92,7 +103,7 @@ namespace GitAcaunt
             gitProcesS.WaitForExit();
             gitProcesS.Close();
 
-            gitInfo.Arguments = users[4];
+            gitInfo.Arguments = UsSergey.Maill;
 
             gitProcesS.StartInfo = gitInfo;
             gitProcesS.Start();
@@ -103,22 +114,44 @@ namespace GitAcaunt
             gitProcesS.WaitForExit();
             gitProcesS.Close();
 
-            MessageBox.Show("Учетка изменена на sergey");
-        }
+            SerializeUser(UsSergey);
 
+          //  MessageBox.Show("Учетка изменена на sergey");
+        }
         private void Button_Click_6N2P(object sender, RoutedEventArgs e)
         {
             User6N2P();
-            tb_Text.Text = "Аккаунт 6N2P";
+            tb_Text.Text = $"Аккаунт {Us6N2P.Name}";
         }
-
-       
-
         private void Button_Click_Sergey(object sender, RoutedEventArgs e)
         {
             UserSergey();
-            tb_Text.Text = "Аккаунт sergey";
+            tb_Text.Text = $"Аккаунт {UsSergey.Name}";
         }
-       
+       static void SerializeUser(User user)
+        {
+            //Создание сеариализатор на основе класса User
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(User));
+            //Создание потока для сохронения данных
+            Stream fStream = new FileStream ("serialUeser.xml", FileMode.Create, FileAccess.Write);
+            //Запуск процесса сериализации
+            xmlSerializer.Serialize(fStream, user);
+            //Закрытие потока
+            fStream.Close();
+        }
+        static User DeserializeUser()
+        {
+            User tempUser = new User();
+            //Создается скриализатор на основе указанного типа
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(User));
+            //Создается поток для чтения данных
+            Stream fStream = new FileStream("serialUeser.xml", FileMode.Open, FileAccess.Read);
+            //Запускается процесс десериализации
+            tempUser=xmlSerializer.Deserialize(fStream) as User;
+            //Закрываю поток
+            fStream.Close();
+            //Возвращаю результат
+            return tempUser;
+        }
     }
 }
